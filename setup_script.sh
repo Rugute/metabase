@@ -11,7 +11,7 @@ echo "Creating Metabase user"
 #mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -e "FLUSH PRIVILEGES;"
 #mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -e "QUIT" 
 
-echo "User creation completed successfully"
+echo "User creation completed successfully[]"
 
 sudo ansible-playbook install_metabse.yml
 
