@@ -1,0 +1,47 @@
+---
+- hosts: localhost
+  become_method: sudo
+  become: true
+
+  tasks:
+  - name: Create Folder opt/Metabase
+    file: 
+       path: /opt/metabase/
+       owner: root
+       group: root
+       mode: 0777 
+       recurse: yes
+       state: directory
+       
+  #- name: Downloading Metabase Please Wait !!!
+  #  become: yes
+  #  get_url:
+  #     url: https://downloads.metabase.com/v0.41.2/metabase.jar 
+  #     dest: /opt/metabase
+  #     mode: 0755
+  #     group: root
+  #     owner: root
+       
+  - name: copying metabase files 
+    shell: sudo cp metabase.jar /opt/metabase  
+       
+  - name: Running Metabase
+    shell: java -jar /opt/metabase/metabase.jar
+    
+  - name: Configuring 
+    shell: sudo groupadd -r appmgr
+    shell: sudo useradd -r -s /bin/false -g appmgr appmgr
+    shell: sudo chown -R appmgr:appmgr /opt/metabase
+    
+  - name: Creating Metabase Service
+    shell: sudo cp metabase.service /etc/systemd/system/ 
+    
+  - name: Start Metabase Services
+    shell: sudo systemctl daemon-reload
+    shell: sudo systemctl start metabase.service
+    shell: sudo systemctl enable metabase.service
+    
+  - name: check status metabase status
+    shell: sudo systemctl status metabase   
+     
+
